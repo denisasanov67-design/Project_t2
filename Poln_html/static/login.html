@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход в систему</title>
+    <title>T2 Пульс | Вход в систему</title>
     <style>
         * {
             margin: 0;
@@ -12,26 +12,167 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #0d0d0d 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Tele2 элементы дизайна */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 40%, rgba(98, 0, 234, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6200ea, #b000ff, #6200ea);
         }
 
         .container {
-            background: white;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
             padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(98, 0, 234, 0.2);
+            width: 460px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* T2 Пульс логотип */
+        .t2-brand {
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        .t2-logo {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #ffffff 0%, #b87cff 50%, #6200ea 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            position: relative;
+            cursor: default;
+        }
+
+        .t2-logo span {
+            font-weight: 300;
+            background: linear-gradient(135deg, #b87cff 0%, #6200ea 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Анимированный пульс-эффект */
+        .pulse-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #6200ea;
+            border-radius: 50%;
+            margin-left: 8px;
+            animation: pulse 1.5s ease-in-out infinite;
+            vertical-align: middle;
+            box-shadow: 0 0 10px rgba(98, 0, 234, 0.5);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(98, 0, 234, 0.7);
+            }
+            70% {
+                transform: scale(1.2);
+                opacity: 0.7;
+                box-shadow: 0 0 0 10px rgba(98, 0, 234, 0);
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(98, 0, 234, 0);
+            }
+        }
+
+        .t2-slogan {
+            font-size: 11px;
+            color: #6200ea;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            font-weight: 500;
+            word-spacing: 2px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            gap: 10px;
+            background: rgba(20, 20, 30, 0.5);
+            border-radius: 12px;
+            padding: 4px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            color: #888;
+            font-weight: 500;
             border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            width: 400px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .tab:hover {
+            color: #c084fc;
+            background: rgba(98, 0, 234, 0.1);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #6200ea, #8b3dff);
+            color: white;
+            box-shadow: 0 2px 8px rgba(98, 0, 234, 0.3);
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 30px;
-            color: #333;
+            margin-bottom: 28px;
+            color: #fff;
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: -0.5px;
         }
 
         .form-group {
@@ -40,176 +181,360 @@
 
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #555;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         input, select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
+            padding: 14px 16px;
+            background: rgba(20, 20, 30, 0.8);
+            border: 1px solid rgba(98, 0, 234, 0.3);
+            border-radius: 12px;
+            font-size: 15px;
+            color: #fff;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #8b3dff;
+            box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.2);
+            background: rgba(30, 30, 45, 0.9);
+        }
+
+        input::placeholder {
+            color: #555;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        select option {
+            background: #1a1a2a;
         }
 
         button {
             width: 100%;
-            padding: 12px;
-            background: #667eea;
+            padding: 14px;
+            background: linear-gradient(135deg, #6200ea, #8b3dff);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 12px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
         }
 
-            button:hover {
-                background: #5a67d8;
-            }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(98, 0, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
 
         .error {
-            color: red;
+            color: #ff4444;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 12px;
+            font-size: 13px;
+            padding: 8px;
+            background: rgba(255, 68, 68, 0.1);
+            border-radius: 8px;
+            display: none;
         }
-
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #eee;
-        }
-
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            cursor: pointer;
-            color: #666;
-        }
-
-            .tab.active {
-                color: #667eea;
-                border-bottom: 2px solid #667eea;
-                margin-bottom: -2px;
-            }
 
         .form-panel {
             display: none;
         }
 
-            .form-panel.active {
-                display: block;
-            }
-
-        .info {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f0f0f0;
-            border-radius: 5px;
-            font-size: 14px;
+        .form-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
         }
 
-        .role-select {
-            margin-top: 10px;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .info {
+            margin-top: 24px;
+            padding: 16px;
+            background: rgba(98, 0, 234, 0.1);
+            border-radius: 12px;
+            font-size: 12px;
+            border: 1px solid rgba(98, 0, 234, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .info:hover {
+            background: rgba(98, 0, 234, 0.15);
+            border-color: rgba(98, 0, 234, 0.4);
+        }
+
+        .info strong {
+            color: #c084fc;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .info p {
+            color: #888;
+            line-height: 1.8;
+            font-size: 12px;
+        }
+
+        .info p span {
+            color: #b87cff;
+            font-weight: 500;
+        }
+
+        small {
+            color: #666;
+            font-size: 11px;
+            margin-top: 6px;
+            display: block;
+        }
+
+        /* Кастомный скролл */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a2a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #6200ea;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8b3dff;
+        }
+
+        /* Адаптив */
+        @media (max-width: 520px) {
+            .container {
+                margin: 20px;
+                padding: 30px 25px;
+                width: auto;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .t2-logo {
+                font-size: 32px;
+            }
+
+            .t2-slogan {
+                font-size: 9px;
+                letter-spacing: 3px;
+            }
+
+            .tab {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            input, select, button {
+                padding: 12px 14px;
+                font-size: 14px;
+            }
+        }
+
+        /* Пульсирующие фоновые элементы */
+        .pulse-ring {
+            position: fixed;
+            top: 20%;
+            right: 10%;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(98,0,234,0.1) 0%, transparent 70%);
+            animation: slowPulse 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes slowPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.1;
+            }
+        }
+
+        .pulse-ring2 {
+            position: fixed;
+            bottom: 15%;
+            left: 5%;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(176,0,255,0.08) 0%, transparent 70%);
+            animation: slowPulse 5s ease-in-out infinite reverse;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .pulse-ring3 {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(98,0,234,0.05) 0%, transparent 70%);
+            animation: slowPulse 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Анимация загрузки */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
         }
     </style>
 </head>
 <body>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring2"></div>
+    <div class="pulse-ring3"></div>
+
     <div class="container">
+        <div class="t2-brand">
+            <div class="t2-logo">
+                T2<span> Пульс</span>
+                <span class="pulse-dot"></span>
+            </div>
+            <div class="t2-slogan">БЫТЬ В ПУЛЬСЕ</div>
+        </div>
+
         <div class="tabs">
-            <div class="tab active" onclick="switchTab('login')">Вход</div>
-            <div class="tab" onclick="switchTab('register')">Регистрация</div>
+            <div class="tab active" onclick="switchTab('login')">ВХОД</div>
+            <div class="tab" onclick="switchTab('register')">РЕГИСТРАЦИЯ</div>
         </div>
 
         <div id="loginPanel" class="form-panel active">
-            <h2>Вход в систему</h2>
+            <h2>Добро пожаловать</h2>
             <form onsubmit="login(event)">
                 <div class="form-group">
-                    <label>Логин:</label>
-                    <input type="text" id="loginUsername" required>
+                    <label>Логин</label>
+                    <input type="text" id="loginUsername" required placeholder="Введите ваш логин">
                 </div>
                 <div class="form-group">
-                    <label>Пароль:</label>
-                    <input type="password" id="loginPassword" required>
+                    <label>Пароль</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••">
                 </div>
-                <button type="submit">Войти</button>
+                <button type="submit" id="loginBtn">Войти →</button>
                 <div id="loginError" class="error"></div>
             </form>
             <div class="info">
-                <strong>Тестовые аккаунты:</strong><br>
-                👑 Админ: admin / admin123<br>
-                👔 Менеджер: manager / manager123<br>
-                👤 Сотрудник: employee1 / emp123
+                <strong>📱 ТЕСТОВЫЕ АККАУНТЫ T2 ПУЛЬС</strong>
+                <p>👑 <span>Администратор:</span> admin / admin123</p>
+                <p>👔 <span>Руководитель:</span> manager / manager123</p>
+                <p>👤 <span>Сотрудник:</span> employee1 / emp123</p>
             </div>
         </div>
 
         <div id="registerPanel" class="form-panel">
-            <h2>Регистрация</h2>
+            <h2>Создать аккаунт</h2>
             <form onsubmit="register(event)">
                 <div class="form-group">
-                    <label>ФИО:</label>
-                    <input type="text" id="regFullName" required>
+                    <label>ФИО</label>
+                    <input type="text" id="regFullName" required placeholder="Иванов Иван Иванович">
                 </div>
                 <div class="form-group">
-                    <label>Логин:</label>
-                    <input type="text" id="regUsername" required>
+                    <label>Логин</label>
+                    <input type="text" id="regUsername" required placeholder="Придумайте логин">
                 </div>
                 <div class="form-group">
-                    <label>Пароль:</label>
-                    <input type="password" id="regPassword" required>
+                    <label>Пароль</label>
+                    <input type="password" id="regPassword" required placeholder="Минимум 6 символов">
                 </div>
                 <div class="form-group">
-                    <label>Отдел:</label>
-                    <input type="text" id="regDepartment" placeholder="Например: Продажи">
+                    <label>Отдел</label>
+                    <input type="text" id="regDepartment" placeholder="Например: Продажи / Техподдержка">
                 </div>
                 <div class="form-group">
-                    <label>Роль:</label>
+                    <label>Роль</label>
                     <select id="regRole" required>
                         <option value="employee">👤 Сотрудник</option>
                         <option value="manager">👔 Руководитель</option>
                     </select>
-                    <small style="color: #666; display: block; margin-top: 5px;">
-                        Для роли "Администратор" обратитесь к системному администратору
-                    </small>
+                    <small>Для роли "Администратор" обратитесь к системному администратору</small>
                 </div>
-                <button type="submit">Зарегистрироваться</button>
+                <button type="submit" id="registerBtn">Зарегистрироваться →</button>
                 <div id="registerError" class="error"></div>
             </form>
         </div>
     </div>
 
     <script>
-        async function register(event) {
-            event.preventDefault();
-
-            const data = {
-                full_name: document.getElementById('regFullName').value,
-                username: document.getElementById('regUsername').value,
-                password: document.getElementById('regPassword').value,
-                department: document.getElementById('regDepartment').value,
-                role: document.getElementById('regRole').value
-            };
-
-            try {
-                const response = await fetch('/api/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    alert('✅ ' + result.message + '\n\nПосле подтверждения вы сможете войти в систему.');
-                    switchTab('login');
-                    document.getElementById('loginUsername').value = data.username;
-                } else {
-                    document.getElementById('registerError').textContent = result.error;
-                }
-            } catch (error) {
-                document.getElementById('registerError').textContent = 'Ошибка соединения';
-            }
-        }
         function switchTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
@@ -217,16 +542,36 @@
             if (tab === 'login') {
                 document.querySelectorAll('.tab')[0].classList.add('active');
                 document.getElementById('loginPanel').classList.add('active');
+                // Очищаем ошибки при переключении
+                document.getElementById('loginError').style.display = 'none';
+                document.getElementById('loginError').textContent = '';
             } else {
                 document.querySelectorAll('.tab')[1].classList.add('active');
                 document.getElementById('registerPanel').classList.add('active');
+                document.getElementById('registerError').style.display = 'none';
+                document.getElementById('registerError').textContent = '';
             }
         }
 
         async function login(event) {
             event.preventDefault();
-            const username = document.getElementById('loginUsername').value;
+            const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            const loginBtn = document.getElementById('loginBtn');
+
+            // Валидация
+            if (!username || !password) {
+                errorDiv.textContent = '❌ Заполните все поля';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            // Показываем загрузку
+            const originalText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<span class="loading-spinner"></span> Вход...';
+            loginBtn.disabled = true;
+            errorDiv.style.display = 'none';
 
             try {
                 const response = await fetch('/api/login', {
@@ -240,28 +585,65 @@
                 if (data.success) {
                     localStorage.setItem('user', JSON.stringify(data));
 
-                    if (data.role === 'admin' || data.role === 'manager') {
-                        window.location.href = '/manager.html';
-                    } else {
-                        window.location.href = '/employee.html';
-                    }
+                    // Небольшая задержка для анимации
+                    setTimeout(() => {
+                        if (data.role === 'admin' || data.role === 'manager') {
+                            window.location.href = '/manager.html';
+                        } else {
+                            window.location.href = '/employee.html';
+                        }
+                    }, 500);
                 } else {
-                    document.getElementById('loginError').textContent = data.error;
+                    errorDiv.textContent = data.error || '❌ Неверный логин или пароль';
+                    errorDiv.style.display = 'block';
+                    loginBtn.innerHTML = originalText;
+                    loginBtn.disabled = false;
                 }
             } catch (error) {
-                document.getElementById('loginError').textContent = 'Ошибка соединения';
+                errorDiv.textContent = '❌ Ошибка соединения с сервером';
+                errorDiv.style.display = 'block';
+                loginBtn.innerHTML = originalText;
+                loginBtn.disabled = false;
+                console.error('Login error:', error);
             }
         }
 
         async function register(event) {
             event.preventDefault();
 
+            const fullName = document.getElementById('regFullName').value.trim();
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const department = document.getElementById('regDepartment').value.trim();
+            const role = document.getElementById('regRole').value;
+            const errorDiv = document.getElementById('registerError');
+            const registerBtn = document.getElementById('registerBtn');
+
+            // Валидация
+            if (!fullName || !username || !password) {
+                errorDiv.textContent = '❌ Заполните обязательные поля';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (password.length < 6) {
+                errorDiv.textContent = '❌ Пароль должен содержать минимум 6 символов';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            // Показываем загрузку
+            const originalText = registerBtn.innerHTML;
+            registerBtn.innerHTML = '<span class="loading-spinner"></span> Регистрация...';
+            registerBtn.disabled = true;
+            errorDiv.style.display = 'none';
+
             const data = {
-                full_name: document.getElementById('regFullName').value,
-                username: document.getElementById('regUsername').value,
-                password: document.getElementById('regPassword').value,
-                department: document.getElementById('regDepartment').value,
-                role: document.getElementById('regRole').value
+                full_name: fullName,
+                username: username,
+                password: password,
+                department: department || 'Не указан',
+                role: role
             };
 
             try {
@@ -274,14 +656,31 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    alert('Регистрация успешна! Теперь войдите.');
+                    alert('✅ ' + (result.message || 'Регистрация успешна!') + '\n\nПосле подтверждения вы сможете войти в систему.');
                     switchTab('login');
                     document.getElementById('loginUsername').value = data.username;
+                    document.getElementById('loginPassword').value = '';
+                    
+                    // Очистка формы регистрации
+                    document.getElementById('regFullName').value = '';
+                    document.getElementById('regUsername').value = '';
+                    document.getElementById('regPassword').value = '';
+                    document.getElementById('regDepartment').value = '';
+                    
+                    registerBtn.innerHTML = originalText;
+                    registerBtn.disabled = false;
                 } else {
-                    document.getElementById('registerError').textContent = result.error;
+                    errorDiv.textContent = result.error || '❌ Ошибка регистрации';
+                    errorDiv.style.display = 'block';
+                    registerBtn.innerHTML = originalText;
+                    registerBtn.disabled = false;
                 }
             } catch (error) {
-                document.getElementById('registerError').textContent = 'Ошибка соединения';
+                errorDiv.textContent = '❌ Ошибка соединения с сервером';
+                errorDiv.style.display = 'block';
+                registerBtn.innerHTML = originalText;
+                registerBtn.disabled = false;
+                console.error('Register error:', error);
             }
         }
     </script>
