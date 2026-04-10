@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Визуализация графиков</title>
+    <title>T2 Пульс | Визуализация графиков</title>
     <style>
         * {
             margin: 0;
@@ -12,32 +12,146 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #0d0d0d 100%);
+            min-height: 100vh;
+            padding: 30px;
+            position: relative;
+        }
+
+        /* Фоновые элементы */
+        body::before {
+            content: '';
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 40%, rgba(98, 0, 234, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            top: 0;
+            left: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6200ea, #b000ff, #6200ea);
+            pointer-events: none;
+        }
+
+        /* Пульсирующие фоновые элементы */
+        .pulse-ring {
+            position: fixed;
+            top: 20%;
+            right: 10%;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(98, 0, 234, 0.1) 0%, transparent 70%);
+            animation: slowPulse 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .pulse-ring2 {
+            position: fixed;
+            bottom: 15%;
+            left: 5%;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(176, 0, 255, 0.08) 0%, transparent 70%);
+            animation: slowPulse 5s ease-in-out infinite reverse;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes slowPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.1;
+            }
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(98, 0, 234, 0.2);
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out;
+            position: relative;
+            z-index: 1;
         }
 
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Хедер */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #4CAF50;
+            padding: 24px 32px;
+            background: linear-gradient(135deg, rgba(98, 0, 234, 0.1), rgba(139, 61, 255, 0.05));
+            border-bottom: 1px solid rgba(98, 0, 234, 0.2);
         }
 
-            .header h1 {
-                color: #4CAF50;
-            }
+        .logo-section h1 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #b87cff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-section p {
+            font-size: 11px;
+            color: #6200ea;
+            letter-spacing: 2px;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-role {
+            color: #888;
+            font-size: 11px;
+            margin-top: 2px;
+        }
 
         .nav-buttons {
             display: flex;
@@ -45,204 +159,348 @@
         }
 
         .nav-btn {
-            padding: 8px 16px;
-            background: #e0e0e0;
-            color: #333;
-            border: none;
-            border-radius: 5px;
+            padding: 8px 20px;
+            background: rgba(98, 0, 234, 0.2);
+            color: #b87cff;
+            border: 1px solid rgba(98, 0, 234, 0.3);
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
             text-decoration: none;
-            font-size: 14px;
         }
 
-            .nav-btn:hover {
-                background: #d0d0d0;
-            }
+        .nav-btn:hover {
+            background: rgba(98, 0, 234, 0.4);
+            transform: translateY(-1px);
+        }
 
         .logout-btn {
-            padding: 8px 16px;
+            padding: 8px 20px;
+            background: rgba(220, 53, 69, 0.2);
+            color: #ff6b6b;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
             background: #dc3545;
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            border-color: #dc3545;
+            transform: translateY(-1px);
         }
 
-        /* Стили для графиков */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .chart-card {
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: #f9f9f9;
-        }
-
-            .chart-card h3 {
-                margin-top: 0;
-                margin-bottom: 15px;
-                color: #333;
-            }
-
-        .simple-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .simple-btn {
-            padding: 8px 16px;
-            background: #e0e0e0;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-            .simple-btn.active {
-                background: #4CAF50;
-                color: white;
-            }
-
-        .simple-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .simple-stat {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-            .simple-stat span {
-                font-size: 28px;
-                font-weight: bold;
-                display: block;
-                color: #4CAF50;
-            }
-
-            .simple-stat label {
-                font-size: 12px;
-                color: #666;
-                display: block;
-                margin-top: 5px;
-            }
-
-        .chart-container {
-            overflow-x: auto;
-            min-height: 300px;
-            padding: 10px 0;
-        }
-
-        .bar-chart {
-            display: flex;
-            align-items: flex-end;
-            gap: 8px;
-            min-width: max-content;
-        }
-
-        .bar-wrapper {
-            text-align: center;
-            min-width: 50px;
-        }
-
-        .bar {
-            background: linear-gradient(180deg, #4CAF50 0%, #45a049 100%);
-            width: 100%;
-            min-height: 2px;
-            border-radius: 4px 4px 0 0;
-            transition: height 0.3s;
-            margin-bottom: 8px;
-        }
-
-        .bar-value {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .bar-label {
-            font-size: 11px;
-            color: #666;
-            word-break: break-word;
-        }
-
-        .stats-table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-
-            .stats-table th,
-            .stats-table td {
-                padding: 10px;
-                text-align: left;
-                border-bottom: 1px solid #ddd;
-            }
-
-            .stats-table th {
-                background: #f0f0f0;
-                font-weight: bold;
-            }
-
+        /* Сводка */
         .summary-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, rgba(98, 0, 234, 0.2), rgba(139, 61, 255, 0.1));
+            border: 1px solid rgba(98, 0, 234, 0.3);
+            border-radius: 20px;
+            padding: 24px 32px;
+            margin: 32px;
         }
 
-            .summary-card h2 {
-                margin-top: 0;
-            }
+        .summary-card h2 {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
 
         .summary-stats {
             display: flex;
-            gap: 30px;
-            margin-top: 15px;
+            gap: 40px;
+            flex-wrap: wrap;
         }
 
         .summary-stat {
             text-align: center;
         }
 
-            .summary-stat .number {
-                font-size: 36px;
-                font-weight: bold;
-            }
+        .summary-stat .number {
+            font-size: 36px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #b87cff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
 
-            .summary-stat .label {
-                font-size: 14px;
-                opacity: 0.9;
-            }
+        .summary-stat .label {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-        @media (max-width: 768px) {
+        /* Сетка графиков */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            padding: 0 32px 32px 32px;
+        }
+
+        .chart-card {
+            background: rgba(20, 20, 30, 0.8);
+            border: 1px solid rgba(98, 0, 234, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            border-color: rgba(98, 0, 234, 0.4);
+        }
+
+        .chart-card h3 {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        /* Кнопки переключения */
+        .simple-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .simple-btn {
+            padding: 8px 20px;
+            background: rgba(30, 30, 45, 0.8);
+            border: 1px solid rgba(98, 0, 234, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #aaa;
+            transition: all 0.3s ease;
+        }
+
+        .simple-btn:hover {
+            background: rgba(98, 0, 234, 0.2);
+            color: #b87cff;
+        }
+
+        .simple-btn.active {
+            background: linear-gradient(135deg, #6200ea, #8b3dff);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Статистика */
+        .simple-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .simple-stat {
+            background: rgba(30, 30, 45, 0.8);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .simple-stat span {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #b87cff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: block;
+        }
+
+        .simple-stat label {
+            font-size: 11px;
+            color: #888;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Контейнер графиков */
+        .chart-container {
+            overflow-x: auto;
+            min-height: 320px;
+            padding: 10px 0;
+        }
+
+        /* Столбчатая диаграмма */
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            min-width: max-content;
+            padding: 10px 0;
+        }
+
+        .bar-wrapper {
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .bar {
+            background: linear-gradient(180deg, #6200ea 0%, #8b3dff 100%);
+            width: 100%;
+            min-height: 2px;
+            border-radius: 6px 6px 0 0;
+            transition: height 0.3s;
+            margin-bottom: 8px;
+        }
+
+        .bar-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #b87cff;
+            margin-bottom: 5px;
+        }
+
+        .bar-label {
+            font-size: 11px;
+            color: #888;
+            word-break: break-word;
+        }
+
+        /* Таблица */
+        .details-section {
+            padding: 0 32px 32px 32px;
+        }
+
+        .details-section h3 {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 16px;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stats-table th {
+            text-align: left;
+            padding: 14px 16px;
+            background: rgba(98, 0, 234, 0.1);
+            color: #b87cff;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stats-table td {
+            padding: 14px 16px;
+            color: #ddd;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(98, 0, 234, 0.1);
+        }
+
+        .stats-table tr:hover td {
+            background: rgba(98, 0, 234, 0.05);
+        }
+
+        /* Адаптив */
+        @media (max-width: 1024px) {
             .charts-grid {
                 grid-template-columns: 1fr;
             }
         }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .user-section {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .summary-card {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .summary-stats {
+                gap: 20px;
+                justify-content: center;
+            }
+
+            .summary-stat .number {
+                font-size: 28px;
+            }
+
+            .charts-grid {
+                padding: 0 20px 20px 20px;
+                gap: 16px;
+            }
+
+            .chart-card {
+                padding: 16px;
+            }
+
+            .simple-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .details-section {
+                padding: 0 20px 20px 20px;
+            }
+
+            .stats-table th,
+            .stats-table td {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+        }
+
+        /* Анимация загрузки */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
     </style>
 </head>
 <body>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring2"></div>
+
     <div class="container">
         <div class="header">
-            <div>
-                <h1>📊 Визуализация графиков работы</h1>
-                <p>Аналитика по сменам сотрудников</p>
+            <div class="logo-section">
+                <h1>T2 Пульс</h1>
+                <p>ВИЗУАЛИЗАЦИЯ ГРАФИКОВ</p>
             </div>
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <span id="userName"></span>
+            <div class="user-section">
+                <div class="user-info">
+                    <div class="user-name" id="userName"></div>
+                    <div class="user-role" id="userRole">Аналитика</div>
+                </div>
                 <div class="nav-buttons">
                     <button class="nav-btn" onclick="goBack()">← Назад</button>
                     <button class="logout-btn" onclick="logout()">Выйти</button>
@@ -290,19 +548,21 @@
         </div>
 
         <!-- Таблица с детальной информацией -->
-        <div style="margin-top: 30px;">
-            <h3>📋 Детальная информация</h3>
-            <table class="stats-table" id="detailsTable">
-                <thead>
-                    <tr>
-                        <th>Период</th>
-                        <th>Количество смен</th>
-                        <th>% от общего</th>
-                        <th>Рабочих часов</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        <div class="details-section">
+            <h3>📋 Детальная информация по месяцам</h3>
+            <div class="table-wrapper">
+                <table class="stats-table" id="detailsTable">
+                    <thead>
+                        <tr>
+                            <th>Период</th>
+                            <th>Количество смен</th>
+                            <th>% от общего</th>
+                            <th>Рабочих часов</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -313,7 +573,8 @@
             window.location.href = '/login.html';
         }
 
-        document.getElementById('userName').textContent = currentUser.full_name;
+        document.getElementById('userName').textContent = currentUser.full_name || currentUser.username || 'Пользователь';
+        document.getElementById('userRole').textContent = currentUser.role === 'admin' ? 'Администратор' : (currentUser.role === 'manager' ? 'Руководитель' : 'Сотрудник');
 
         // Кэш данных
         let cachedShifts = [];
@@ -333,9 +594,7 @@
                 updateAllCharts();
             } catch (error) {
                 console.error('Ошибка загрузки данных:', error);
-                // Используем localStorage как fallback
-                const employees = JSON.parse(localStorage.getItem('employees') || '[]');
-                updateChartsFromLocalStorage(employees);
+                document.querySelector('.charts-grid').innerHTML = '<div class="loading">❌ Ошибка загрузки данных</div>';
             }
         }
 
@@ -395,21 +654,16 @@
             shifts.forEach(shift => {
                 const date = shift.date;
 
-                // По дням
                 byDay[date] = (byDay[date] || 0) + 1;
-
-                // По месяцам
                 const month = date.slice(0, 7);
                 byMonth[month] = (byMonth[month] || 0) + 1;
 
-                // По неделям
                 const d = new Date(date);
                 const weekNum = Math.ceil(d.getDate() / 7);
                 const week = `${date.slice(0, 4)}-W${weekNum}`;
                 byWeek[week] = (byWeek[week] || 0) + 1;
             });
 
-            // Статистика
             const daysCount = Object.keys(byDay).length;
             const avg = daysCount > 0 ? (total / daysCount).toFixed(1) : 0;
             const max = Math.max(...Object.values(byDay), 0);
@@ -433,7 +687,6 @@
                 </div>
             `;
 
-            // Показываем активный вид
             const activeView = document.querySelector('.simple-btn.active').dataset.view;
             let data, labels;
 
@@ -448,7 +701,7 @@
                 data = labels.map(m => byMonth[m]);
             }
 
-            drawBarChart('simpleChart', labels, data, '#4CAF50');
+            drawBarChart('simpleChart', labels, data);
         }
 
         // График по сотрудникам
@@ -465,7 +718,7 @@
             const labels = sorted.map(e => e[0]);
             const data = sorted.map(e => e[1]);
 
-            drawBarChart('employeeChart', labels, data, '#2196F3');
+            drawBarChart('employeeChart', labels, data);
         }
 
         // График по отделам
@@ -482,7 +735,7 @@
             const labels = sorted.map(e => e[0]);
             const data = sorted.map(e => e[1]);
 
-            drawBarChart('departmentChart', labels, data, '#FF9800');
+            drawBarChart('departmentChart', labels, data);
         }
 
         // График по статусам
@@ -502,7 +755,7 @@
 
             const labels = ['На рассмотрении', 'Подтверждено', 'Отклонено'];
             const data = [byStatus.pending, byStatus.approved, byStatus.rejected];
-            const colors = ['#FFC107', '#4CAF50', '#F44336'];
+            const colors = ['#ffc107', '#2ecc71', '#ff6b6b'];
 
             drawPieChart('statusChart', labels, data, colors);
         }
@@ -519,8 +772,7 @@
                 }
                 byMonth[month].count++;
 
-                // Примерный расчет часов
-                if (shift.start_time && shift.end_time) {
+                if (shift.start_time && shift.end_time && shift.start_time !== 'Выходной') {
                     const start = shift.start_time.split(':').map(Number);
                     const end = shift.end_time.split(':').map(Number);
                     let hours = end[0] - start[0];
@@ -533,11 +785,16 @@
             const tbody = document.querySelector('#detailsTable tbody');
             tbody.innerHTML = '';
 
+            if (Object.keys(byMonth).length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px;">📭 Нет данных для отображения</td></tr>';
+                return;
+            }
+
             Object.entries(byMonth).sort((a, b) => b[0].localeCompare(a[0])).forEach(([month, data]) => {
                 const row = tbody.insertRow();
-                const percent = ((data.count / total) * 100).toFixed(1);
+                const percent = total > 0 ? ((data.count / total) * 100).toFixed(1) : 0;
                 row.innerHTML = `
-                    <td>${month}</td>
+                    <td><strong>${month}</strong></td>
                     <td>${data.count}</td>
                     <td>${percent}%</td>
                     <td>~${data.hours} ч.</td>
@@ -546,19 +803,27 @@
         }
 
         // Отрисовка столбчатой диаграммы
-        function drawBarChart(containerId, labels, data, color) {
+        function drawBarChart(containerId, labels, data) {
             const container = document.getElementById(containerId);
+            
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">📊 Нет данных для отображения</div>';
+                return;
+            }
+
             const maxValue = Math.max(...data, 1);
+            const colors = ['#6200ea', '#8b3dff', '#b87cff', '#9b59b6', '#a569bd'];
 
             let html = '<div class="bar-chart">';
 
             for (let i = 0; i < data.length; i++) {
-                const height = (data[i] / maxValue) * 200;
+                const height = (data[i] / maxValue) * 180;
+                const color = colors[i % colors.length];
                 html += `
                     <div class="bar-wrapper">
                         <div class="bar-value">${data[i]}</div>
-                        <div class="bar" style="height: ${height}px; background: ${color};"></div>
-                        <div class="bar-label">${labels[i]}</div>
+                        <div class="bar" style="height: ${Math.max(height, 4)}px; background: linear-gradient(180deg, ${color} 0%, #6200ea 100%);"></div>
+                        <div class="bar-label" title="${labels[i]}">${labels[i].length > 15 ? labels[i].slice(0, 12) + '...' : labels[i]}</div>
                     </div>
                 `;
             }
@@ -573,14 +838,14 @@
             const total = data.reduce((a, b) => a + b, 0);
 
             if (total === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #999;">Нет данных для отображения</p>';
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">📊 Нет данных для отображения</div>';
                 return;
             }
 
-            let html = '<div style="display: flex; gap: 20px; align-items: center;">';
-            html += '<div style="position: relative; width: 200px; height: 200px;">';
-
-            // SVG для круговой диаграммы
+            let html = '<div style="display: flex; gap: 30px; align-items: center; flex-wrap: wrap; justify-content: center;">';
+            
+            // SVG круговая диаграмма
+            html += '<div style="position: relative; width: 180px; height: 180px;">';
             let cumulative = 0;
             const paths = data.map((value, i) => {
                 const percent = value / total;
@@ -588,17 +853,17 @@
                 cumulative += percent;
                 const endAngle = cumulative * 2 * Math.PI;
 
-                const x1 = 100 + 80 * Math.cos(startAngle);
-                const y1 = 100 + 80 * Math.sin(startAngle);
-                const x2 = 100 + 80 * Math.cos(endAngle);
-                const y2 = 100 + 80 * Math.sin(endAngle);
+                const x1 = 90 + 80 * Math.cos(startAngle);
+                const y1 = 90 + 80 * Math.sin(startAngle);
+                const x2 = 90 + 80 * Math.cos(endAngle);
+                const y2 = 90 + 80 * Math.sin(endAngle);
 
                 const largeArc = percent > 0.5 ? 1 : 0;
 
-                return `<path d="M 100 100 L ${x1} ${y1} A 80 80 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${colors[i]}"/>`;
+                return `<path d="M 90 90 L ${x1} ${y1} A 80 80 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${colors[i]}" stroke="#1a1a2a" stroke-width="2"/>`;
             });
 
-            html += `<svg width="200" height="200" viewBox="0 0 200 200">${paths.join('')}</svg>`;
+            html += `<svg width="180" height="180" viewBox="0 0 180 180">${paths.join('')}</svg>`;
             html += '</div>';
 
             // Легенда
@@ -606,9 +871,9 @@
             data.forEach((value, i) => {
                 const percent = ((value / total) * 100).toFixed(1);
                 html += `
-                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                        <div style="width: 20px; height: 20px; background: ${colors[i]}; margin-right: 10px; border-radius: 3px;"></div>
-                        <div>${labels[i]}: ${value} (${percent}%)</div>
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <div style="width: 16px; height: 16px; background: ${colors[i]}; margin-right: 12px; border-radius: 4px;"></div>
+                        <div style="color: #ddd;"><span style="color: #fff; font-weight: 500;">${labels[i]}</span>: ${value} (${percent}%)</div>
                     </div>
                 `;
             });
