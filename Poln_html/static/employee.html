@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>График сотрудника</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-shift {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background: #0056b3;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f8f9fa;
+        }
+
+        .status {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+            .status.pending {
+                background: #ffc107;
+                color: #000;
+            }
+
+            .status.approved {
+                background: #28a745;
+                color: white;
+            }
+
+            .status.rejected {
+                background: #dc3545;
+                color: white;
+            }
+
+        .delete-btn {
+            background: #dc3545;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Мой график работы</h1>
+            <div>
+                <span id="userName"></span>
+                <button class="logout-btn" onclick="logout()">Выйти</button>
+            </div>
+        </div>
+
+        <div class="add-shift">
+            <h3>Добавить смену</h3>
+            <form onsubmit="addShift(event)">
+                <div class="form-group">
+                    <label>Дата:</label>
+                    <input type="date" id="shiftDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Начало смены:</label>
+                    <select id="startTime" required>
+                        <option value="">Выберите время</option>
+                        <option value="Выходной">Выходной</option>
+                        <option value="08:00">08:00</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                    </select>
+                </div>
+                <div class="form-group" id="endTimeGroup">
+                    <label>Конец смены:</label>
+                    <select id="endTime">
+                        <option value="">Выберите время</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                        <option value="21:00">21:00</option>
+                        <option value="22:00">22:00</option>
+                    </select>
+                </div>
+                <button type="submit">Добавить смену</button>
+            </form>
+        </div>
+
+        <h2>Мои смены</h2>
+        <table id="shiftsTable">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Время</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        let currentUser = JSON.parse(localStorage.getItem('user'));
+
+        if (!currentUser) {
+            window.location.href = '/login.html';
+        }
+
+        document.getElementById('userName').textContent = currentUser.full_name;
+
+        document.getElementById('startTime').addEventListener('change', function () {
+            const endTimeGroup = document.getElementById('endTimeGroup');
+            const endTime = document.getElementById('endTime');
+
+            if (this.value === 'Выходной') {
+                endTimeGroup.style.display = 'none';
+                endTime.required = false;
+            } else {
+                endTimeGroup.style.display = 'block';
+                endTime.required = true;
+            }
+        });
+
+        async function loadShifts() {
+            try {
+                const response = await fetch(`/api/shifts?user_id=${currentUser.user_id}`);
+                const shifts = await response.json();
+
+                const tbody = document.querySelector('#shiftsTable tbody');
+                tbody.innerHTML = '';
+
+                shifts.forEach(shift => {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                            <td>${shift.date}</td>
+                            <td>${shift.start_time} ${shift.end_time ? '- ' + shift.end_time : ''}</td>
+                            <td><span class="status ${shift.status}">${getStatusText(shift.status)}</span></td>
+                            <td>
+                                ${shift.status === 'pending' ?
+                            `<button class="delete-btn" onclick="deleteShift(${shift.id})">Удалить</button>` :
+                            ''}
+                            </td>
+                        `;
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки смен:', error);
+            }
+        }
+
+        function getStatusText(status) {
+            const statuses = {
+                'pending': 'На рассмотрении',
+                'approved': 'Подтверждено',
+                'rejected': 'Отклонено'
+            };
+            return statuses[status] || status;
+        }
+
+        async function addShift(event) {
+            event.preventDefault();
+
+            const date = document.getElementById('shiftDate').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+
+            try {
+                const response = await fetch('/api/shifts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: currentUser.user_id,
+                        date,
+                        start_time: startTime,
+                        end_time: startTime === 'Выходной' ? null : endTime
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Смена добавлена!');
+                    loadShifts();
+                    event.target.reset();
+                }
+            } catch (error) {
+                alert('Ошибка при добавлении смены');
+            }
+        }
+
+        async function deleteShift(shiftId) {
+            if (confirm('Удалить эту смену?')) {
+                try {
+                    await fetch(`/api/shifts/${shiftId}`, { method: 'DELETE' });
+                    loadShifts();
+                } catch (error) {
+                    alert('Ошибка при удалении');
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '/login.html';
+        }
+
+        loadShifts();
+    </script>
+</body>
+</html>

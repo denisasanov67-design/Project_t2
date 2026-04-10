@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в систему</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+            button:hover {
+                background: #5a67d8;
+            }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            color: #666;
+        }
+
+            .tab.active {
+                color: #667eea;
+                border-bottom: 2px solid #667eea;
+                margin-bottom: -2px;
+            }
+
+        .form-panel {
+            display: none;
+        }
+
+            .form-panel.active {
+                display: block;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('login')">Вход</div>
+            <div class="tab" onclick="switchTab('register')">Регистрация</div>
+        </div>
+
+        <div id="loginPanel" class="form-panel active">
+            <h2>Вход в систему</h2>
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label>Логин:</label>
+                    <input type="text" id="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit">Войти</button>
+            </form>
+            <div id="loginError" class="error"></div>
+            <div style="margin-top: 20px; padding: 10px; background: #f0f0f0; border-radius: 5px; font-size: 14px;">
+                <strong>Тестовые аккаунты:</strong><br>
+                👑 Админ: admin / admin123<br>
+                👔 Менеджер: manager / manager123<br>
+                👤 Сотрудник: employee1 / emp123
+            </div>
+        </div>
+
+        <div id="registerPanel" class="form-panel">
+            <h2>Регистрация</h2>
+            <form onsubmit="register(event)">
+                <div class="form-group">
+                    <label>ФИО:</label>
+                    <input type="text" id="regFullName" required>
+                </div>
+                <div class="form-group">
+                    <label>Логин:</label>
+                    <input type="text" id="regUsername" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль:</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+            <div id="registerError" class="error"></div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+
+            if (tab === 'login') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.getElementById('loginPanel').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                document.getElementById('registerPanel').classList.add('active');
+            }
+        }
+
+        async function login(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username, password})
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('user', JSON.stringify(data));
+
+                    if (data.role === 'admin' || data.role === 'manager') {
+                        window.location.href = '/manager.html';
+                    } else {
+                        window.location.href = '/employee.html';
+                    }
+                } else {
+                    document.getElementById('loginError').textContent = data.error;
+                }
+            } catch (error) {
+                document.getElementById('loginError').textContent = 'Ошибка соединения';
+            }
+        }
+
+        async function register(event) {
+            event.preventDefault();
+            const full_name = document.getElementById('regFullName').value;
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({full_name, username, password})
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Регистрация успешна! Теперь войдите.');
+                    switchTab('login');
+                    document.getElementById('loginUsername').value = username;
+                } else {
+                    document.getElementById('registerError').textContent = data.error;
+                }
+            } catch (error) {
+                document.getElementById('registerError').textContent = 'Ошибка соединения';
+            }
+        }
+    </script>
+</body>
+</html>
