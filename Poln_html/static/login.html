@@ -61,7 +61,6 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            margin-top: 10px;
         }
 
             button:hover {
@@ -101,6 +100,18 @@
             .form-panel.active {
                 display: block;
             }
+
+        .info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .role-select {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -122,9 +133,9 @@
                     <input type="password" id="loginPassword" required>
                 </div>
                 <button type="submit">Войти</button>
+                <div id="loginError" class="error"></div>
             </form>
-            <div id="loginError" class="error"></div>
-            <div style="margin-top: 20px; padding: 10px; background: #f0f0f0; border-radius: 5px; font-size: 14px;">
+            <div class="info">
                 <strong>Тестовые аккаунты:</strong><br>
                 👑 Админ: admin / admin123<br>
                 👔 Менеджер: manager / manager123<br>
@@ -147,13 +158,58 @@
                     <label>Пароль:</label>
                     <input type="password" id="regPassword" required>
                 </div>
+                <div class="form-group">
+                    <label>Отдел:</label>
+                    <input type="text" id="regDepartment" placeholder="Например: Продажи">
+                </div>
+                <div class="form-group">
+                    <label>Роль:</label>
+                    <select id="regRole" required>
+                        <option value="employee">👤 Сотрудник</option>
+                        <option value="manager">👔 Руководитель</option>
+                    </select>
+                    <small style="color: #666; display: block; margin-top: 5px;">
+                        Для роли "Администратор" обратитесь к системному администратору
+                    </small>
+                </div>
                 <button type="submit">Зарегистрироваться</button>
+                <div id="registerError" class="error"></div>
             </form>
-            <div id="registerError" class="error"></div>
         </div>
     </div>
 
     <script>
+        async function register(event) {
+            event.preventDefault();
+
+            const data = {
+                full_name: document.getElementById('regFullName').value,
+                username: document.getElementById('regUsername').value,
+                password: document.getElementById('regPassword').value,
+                department: document.getElementById('regDepartment').value,
+                role: document.getElementById('regRole').value
+            };
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ ' + result.message + '\n\nПосле подтверждения вы сможете войти в систему.');
+                    switchTab('login');
+                    document.getElementById('loginUsername').value = data.username;
+                } else {
+                    document.getElementById('registerError').textContent = result.error;
+                }
+            } catch (error) {
+                document.getElementById('registerError').textContent = 'Ошибка соединения';
+            }
+        }
         function switchTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
@@ -175,8 +231,8 @@
             try {
                 const response = await fetch('/api/login', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({username, password})
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
                 });
 
                 const data = await response.json();
@@ -199,25 +255,30 @@
 
         async function register(event) {
             event.preventDefault();
-            const full_name = document.getElementById('regFullName').value;
-            const username = document.getElementById('regUsername').value;
-            const password = document.getElementById('regPassword').value;
+
+            const data = {
+                full_name: document.getElementById('regFullName').value,
+                username: document.getElementById('regUsername').value,
+                password: document.getElementById('regPassword').value,
+                department: document.getElementById('regDepartment').value,
+                role: document.getElementById('regRole').value
+            };
 
             try {
                 const response = await fetch('/api/register', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({full_name, username, password})
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
                 });
 
-                const data = await response.json();
+                const result = await response.json();
 
-                if (data.success) {
+                if (result.success) {
                     alert('Регистрация успешна! Теперь войдите.');
                     switchTab('login');
-                    document.getElementById('loginUsername').value = username;
+                    document.getElementById('loginUsername').value = data.username;
                 } else {
-                    document.getElementById('registerError').textContent = data.error;
+                    document.getElementById('registerError').textContent = result.error;
                 }
             } catch (error) {
                 document.getElementById('registerError').textContent = 'Ошибка соединения';

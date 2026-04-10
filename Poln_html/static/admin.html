@@ -1,0 +1,758 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #dc3545;
+        }
+
+            .header h1 {
+                color: #dc3545;
+            }
+
+        .logout-btn {
+            padding: 8px 16px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+        }
+
+            .tab.active {
+                color: #dc3545;
+                border-bottom: 2px solid #dc3545;
+            }
+
+        .tab-content {
+            display: none;
+        }
+
+            .tab-content.active {
+                display: block;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f8f9fa;
+        }
+
+        .status {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+            .status.admin {
+                background: #dc3545;
+                color: white;
+            }
+
+            .status.manager {
+                background: #28a745;
+                color: white;
+            }
+
+            .status.employee {
+                background: #17a2b8;
+                color: white;
+            }
+
+            .status.pending {
+                background: #ffc107;
+                color: #000;
+            }
+
+            .status.approved {
+                background: #28a745;
+                color: white;
+            }
+
+            .status.rejected {
+                background: #dc3545;
+                color: white;
+            }
+
+        .action-btn {
+            padding: 5px 10px;
+            margin: 0 2px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .edit-btn {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .approve-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .reject-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .exportToCSVBt {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            margin-right: 10px;
+        }
+
+            .exportToCSVBt:hover {
+                background-color: #45a049;
+            }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #dc3545;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .form-group input, .form-group select {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+            .modal-buttons button {
+                flex: 1;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+        .save-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .add-btn {
+            padding: 10px 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>👑 Панель администратора</h1>
+                <p>Полное управление системой</p>
+            </div>
+            <div>
+                <span id="userName"></span>
+                <button class="logout-btn" onclick="logout()">Выйти</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('pending')">🆕 Заявки <span id="pendingCount" style="background: #dc3545; color: white; padding: 2px 8px; border-radius: 10px; margin-left: 5px;">0</span></button>
+            <button class="tab" onclick="switchTab('users')">👥 Пользователи</button>
+            <button class="tab" onclick="switchTab('shifts')">📋 Все смены</button>
+            <button class="tab" onclick="switchTab('stats')">📊 Статистика</button>
+            <button class="tab" onclick="switchTab('export')">📁 Экспорт</button>
+        </div>
+        <div id="pendingTab" class="tab-content active">
+            <h2>🆕 Заявки на регистрацию</h2>
+            <p style="color: #666; margin-bottom: 20px;">Новые пользователи ожидают подтверждения</p>
+
+            <table id="pendingUsersTable">
+                <thead>
+                    <tr>
+                        <th>Дата заявки</th>
+                        <th>ФИО</th>
+                        <th>Логин</th>
+                        <th>Роль</th>
+                        <th>Отдел</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <!-- Вкладка: Пользователи -->
+        <div id="usersTab" class="tab-content active">
+            <button class="add-btn" onclick="openUserModal()">+ Добавить пользователя</button>
+
+            <table id="usersTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ФИО</th>
+                        <th>Логин</th>
+                        <th>Роль</th>
+                        <th>Отдел</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Вкладка: Все смены -->
+        <div id="shiftsTab" class="tab-content">
+            <button class="exportToCSVBt" onclick="exportToCSV()">📊 Экспорт в CSV</button>
+
+            <table id="adminShiftsTable">
+                <thead>
+                    <tr>
+                        <th>Сотрудник</th>
+                        <th>Отдел</th>
+                        <th>Дата</th>
+                        <th>Время</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Вкладка: Статистика -->
+        <div id="statsTab" class="tab-content">
+            <div class="stats-grid" id="adminStatsContent"></div>
+            <div id="departmentStats" style="margin-top: 30px;"></div>
+        </div>
+
+        <!-- Вкладка: Экспорт -->
+        <div id="exportTab" class="tab-content">
+            <h2>Экспорт данных системы</h2>
+            <div style="margin-top: 30px;">
+                <button class="exportToCSVBt" onclick="exportToCSV()">📊 Экспорт всех смен в CSV</button>
+                <button class="exportToCSVBt" onclick="exportUsersToCSV()">👥 Экспорт пользователей</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для добавления/редактирования пользователя -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Добавить пользователя</h2>
+            <form id="userForm" onsubmit="saveUser(event)">
+                <input type="hidden" id="userId">
+                <div class="form-group">
+                    <label>ФИО:</label>
+                    <input type="text" id="userFullName" required>
+                </div>
+                <div class="form-group">
+                    <label>Логин:</label>
+                    <input type="text" id="userUsername" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль:</label>
+                    <input type="password" id="userPassword">
+                    <small id="passwordHint">Оставьте пустым чтобы не менять</small>
+                </div>
+                <div class="form-group">
+                    <label>Роль:</label>
+                    <select id="userRole" required>
+                        <option value="employee">👤 Сотрудник</option>
+                        <option value="manager">👔 Руководитель</option>
+                        <option value="admin">👑 Администратор</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Отдел:</label>
+                    <input type="text" id="userDepartment">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn" onclick="closeUserModal()">Отмена</button>
+                    <button type="submit" class="save-btn">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = JSON.parse(localStorage.getItem('user'));
+
+        if (!currentUser || currentUser.role !== 'admin') {
+            window.location.href = '/login.html';
+        }
+
+        document.getElementById('userName').textContent = `${currentUser.full_name} (Администратор)`;
+
+        // Переключение вкладок
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+
+            if (tabName === 'pending') loadPendingUsers();
+            else if (tabName === 'users') loadUsers();
+            else if (tabName === 'shifts') loadAllShifts();
+            else if (tabName === 'stats') loadStats();
+        }
+        async function loadPendingUsers() {
+            try {
+                const response = await fetch('/api/users/pending');
+                const users = await response.json();
+
+                const tbody = document.querySelector('#pendingUsersTable tbody');
+                tbody.innerHTML = '';
+
+                const countSpan = document.getElementById('pendingCount');
+                countSpan.textContent = users.length;
+
+                if (users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">✅ Нет заявок на регистрацию</td></tr>';
+                    return;
+                }
+
+                users.forEach(user => {
+                    const row = tbody.insertRow();
+                    const created = user.created_at ? new Date(user.created_at).toLocaleString('ru-RU') : '-';
+
+                    row.innerHTML = `
+                <td>${created}</td>
+                <td>${user.full_name}</td>
+                <td>${user.username}</td>
+                <td><span class="status ${user.role}">${getRoleText(user.role)}</span></td>
+                <td>${user.department || '-'}</td>
+                <td>
+                    <button class="action-btn approve-btn" onclick="approveUser(${user.id})">✓ Подтвердить</button>
+                    <button class="action-btn reject-btn" onclick="rejectUser(${user.id})">✗ Отклонить</button>
+                </td>
+            `;
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки заявок:', error);
+            }
+        }
+
+        async function approveUser(userId) {
+            try {
+                await fetch(`/api/users/${userId}/approve`, { method: 'PUT' });
+                alert('✅ Пользователь подтвержден!');
+                loadPendingUsers();
+                loadUsers();
+                loadStats();
+            } catch (error) {
+                alert('Ошибка при подтверждении');
+            }
+        }
+
+        async function rejectUser(userId) {
+            if (confirm('Отклонить заявку? Пользователь будет удален.')) {
+                try {
+                    await fetch(`/api/users/${userId}/reject`, { method: 'PUT' });
+                    alert('❌ Заявка отклонена');
+                    loadPendingUsers();
+                    loadStats();
+                } catch (error) {
+                    alert('Ошибка при отклонении');
+                }
+            }
+        }
+        // Загрузка пользователей
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/users');
+                const users = await response.json();
+
+                const tbody = document.querySelector('#usersTable tbody');
+                tbody.innerHTML = '';
+
+                users.forEach(user => {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.full_name}</td>
+                            <td>${user.username}</td>
+                            <td><span class="status ${user.role}">${getRoleText(user.role)}</span></td>
+                            <td>${user.department || '-'}</td>
+                            <td>
+                                <button class="action-btn edit-btn" onclick="editUser(${user.id})">✏️</button>
+                                ${user.role !== 'admin' || user.id !== currentUser.user_id ?
+                            `<button class="action-btn delete-btn" onclick="deleteUser(${user.id})">🗑️</button>` : ''}
+                            </td>
+                        `;
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки пользователей:', error);
+            }
+        }
+
+        // Загрузка всех смен
+        async function loadAllShifts() {
+            try {
+                const response = await fetch('/api/shifts');
+                const shifts = await response.json();
+
+                const tbody = document.querySelector('#adminShiftsTable tbody');
+                tbody.innerHTML = '';
+
+                shifts.sort((a, b) => b.date.localeCompare(a.date)).forEach(shift => {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                            <td>${shift.full_name}</td>
+                            <td>${shift.department || '-'}</td>
+                            <td>${shift.date}</td>
+                            <td>${shift.start_time} ${shift.end_time ? '- ' + shift.end_time : ''}</td>
+                            <td><span class="status ${shift.status}">${getStatusText(shift.status)}</span></td>
+                            <td>
+                                ${shift.status === 'pending' ? `
+                                    <button class="action-btn approve-btn" onclick="updateStatus(${shift.id}, 'approved')">✓</button>
+                                    <button class="action-btn reject-btn" onclick="updateStatus(${shift.id}, 'rejected')">✗</button>
+                                ` : '-'}
+                                <button class="action-btn delete-btn" onclick="deleteShift(${shift.id})">🗑️</button>
+                            </td>
+                        `;
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки смен:', error);
+            }
+        }
+
+        // Загрузка статистики
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+
+                const content = document.getElementById('adminStatsContent');
+                content.innerHTML = `
+                        <div class="stat-card">
+                            <h3>Всего пользователей</h3>
+                            <div class="stat-number">${stats.total_employees + 2}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Сотрудников</h3>
+                            <div class="stat-number">${stats.total_employees}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Всего смен</h3>
+                            <div class="stat-number">${stats.total_shifts}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>На подтверждении</h3>
+                            <div class="stat-number" style="color: #ffc107;">${stats.pending_shifts}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Подтверждено</h3>
+                            <div class="stat-number" style="color: #28a745;">${stats.approved_shifts}</div>
+                        </div>
+                    `;
+
+                if (stats.by_department && stats.by_department.length > 0) {
+                    let deptHtml = '<h3>Статистика по отделам:</h3><table><tr><th>Отдел</th><th>Количество смен</th></tr>';
+                    stats.by_department.forEach(dept => {
+                        if (dept.department) {
+                            deptHtml += `<tr><td>${dept.department}</td><td>${dept.count}</td></tr>`;
+                        }
+                    });
+                    deptHtml += '</table>';
+                    document.getElementById('departmentStats').innerHTML = deptHtml;
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки статистики:', error);
+            }
+        }
+
+        // Управление пользователями
+        function openUserModal(userId = null) {
+            const modal = document.getElementById('userModal');
+            const title = document.getElementById('modalTitle');
+            const passwordHint = document.getElementById('passwordHint');
+
+            if (userId) {
+                title.textContent = 'Редактировать пользователя';
+                passwordHint.style.display = 'block';
+                // Загрузить данные пользователя
+                fetch('/api/users')
+                    .then(r => r.json())
+                    .then(users => {
+                        const user = users.find(u => u.id === userId);
+                        if (user) {
+                            document.getElementById('userId').value = user.id;
+                            document.getElementById('userFullName').value = user.full_name;
+                            document.getElementById('userUsername').value = user.username;
+                            document.getElementById('userRole').value = user.role;
+                            document.getElementById('userDepartment').value = user.department || '';
+                        }
+                    });
+            } else {
+                title.textContent = 'Добавить пользователя';
+                passwordHint.style.display = 'none';
+                document.getElementById('userForm').reset();
+                document.getElementById('userId').value = '';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeUserModal() {
+            document.getElementById('userModal').style.display = 'none';
+        }
+
+        function editUser(userId) {
+            openUserModal(userId);
+        }
+
+        async function saveUser(event) {
+            event.preventDefault();
+
+            const userId = document.getElementById('userId').value;
+            const data = {
+                full_name: document.getElementById('userFullName').value,
+                username: document.getElementById('userUsername').value,
+                role: document.getElementById('userRole').value,
+                department: document.getElementById('userDepartment').value
+            };
+
+            if (!userId) {
+                data.password = document.getElementById('userPassword').value;
+            } else if (document.getElementById('userPassword').value) {
+                data.password = document.getElementById('userPassword').value;
+            }
+
+            try {
+                const url = userId ? `/api/users/${userId}` : '/api/register';
+                const method = userId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(userId ? 'Пользователь обновлен!' : 'Пользователь создан!');
+                    closeUserModal();
+                    loadUsers();
+                } else {
+                    alert('Ошибка: ' + result.error);
+                }
+            } catch (error) {
+                alert('Ошибка соединения');
+            }
+        }
+
+        async function deleteUser(userId) {
+            if (confirm('Удалить пользователя? Все его смены также будут удалены!')) {
+                try {
+                    await fetch(`/api/users/${userId}`, { method: 'DELETE' });
+                    loadUsers();
+                } catch (error) {
+                    alert('Ошибка при удалении');
+                }
+            }
+        }
+
+        // Управление сменами
+        async function updateStatus(shiftId, status) {
+            try {
+                await fetch(`/api/shifts/${shiftId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                loadAllShifts();
+            } catch (error) {
+                alert('Ошибка при обновлении статуса');
+            }
+        }
+
+        async function deleteShift(shiftId) {
+            if (confirm('Удалить смену?')) {
+                try {
+                    await fetch(`/api/shifts/${shiftId}`, { method: 'DELETE' });
+                    loadAllShifts();
+                } catch (error) {
+                    alert('Ошибка при удалении');
+                }
+            }
+        }
+
+        // Экспорт
+        function exportToCSV() {
+            window.open('/api/export/csv', '_blank');
+        }
+
+        async function exportUsersToCSV() {
+            try {
+                const response = await fetch('/api/users');
+                const users = await response.json();
+
+                let csv = "ID,ФИО,Логин,Роль,Отдел\n";
+                users.forEach(u => {
+                    csv += `${u.id},"${u.full_name}","${u.username}","${u.role}","${u.department || ''}"\n`;
+                });
+
+                const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `users_${new Date().toISOString().split('T')[0]}.csv`;
+                link.click();
+            } catch (error) {
+                alert('Ошибка экспорта');
+            }
+        }
+
+        // Вспомогательные функции
+        function getRoleText(role) {
+            const roles = { 'admin': 'Админ', 'manager': 'Руководитель', 'employee': 'Сотрудник' };
+            return roles[role] || role;
+        }
+
+        function getStatusText(status) {
+            const statuses = { 'pending': 'Ожидает', 'approved': 'Подтверждено', 'rejected': 'Отклонено' };
+            return statuses[status] || status;
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = '/login.html';
+        }
+
+        // Закрытие модалки при клике вне
+        window.onclick = function (event) {
+            const modal = document.getElementById('userModal');
+            if (event.target === modal) {
+                closeUserModal();
+            }
+        }
+
+        // Начальная загрузка
+        loadPendingUsers();
+        loadStats();
+    </script>
+</body>
+</html>
