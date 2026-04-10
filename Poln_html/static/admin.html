@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>T2 Пульс | Панель администратора</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
             background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #0d0d0d 100%);
@@ -14,26 +18,26 @@
             padding: 20px;
             position: relative;
         }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 20% 40%, rgba(98, 0, 234, 0.08) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        
-        body::after {
-            content: '';
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #6200ea, #b000ff, #6200ea);
-        }
-        
+
+            body::before {
+                content: '';
+                position: fixed;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle at 20% 40%, rgba(98, 0, 234, 0.08) 0%, transparent 50%);
+                pointer-events: none;
+            }
+
+            body::after {
+                content: '';
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: linear-gradient(90deg, #6200ea, #b000ff, #6200ea);
+            }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -45,7 +49,7 @@
             position: relative;
             z-index: 1;
         }
-        
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -54,13 +58,13 @@
             padding-bottom: 20px;
             border-bottom: 1px solid rgba(98, 0, 234, 0.3);
         }
-        
+
         .t2-brand {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        
+
         .t2-logo {
             font-size: 28px;
             font-weight: 800;
@@ -70,11 +74,11 @@
             background-clip: text;
             color: transparent;
         }
-        
-        .t2-logo span {
-            font-weight: 300;
-        }
-        
+
+            .t2-logo span {
+                font-weight: 300;
+            }
+
         .pulse-dot {
             display: inline-block;
             width: 8px;
@@ -84,29 +88,43 @@
             margin-left: 5px;
             animation: pulse 1.5s ease-in-out infinite;
         }
-        
+
         @keyframes pulse {
-            0% { transform: scale(0.8); opacity: 1; box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
-            70% { transform: scale(1.2); opacity: 0.7; box-shadow: 0 0 0 8px rgba(220, 53, 69, 0); }
-            100% { transform: scale(0.8); opacity: 1; box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+            }
+
+            70% {
+                transform: scale(1.2);
+                opacity: 0.7;
+                box-shadow: 0 0 0 8px rgba(220, 53, 69, 0);
+            }
+
+            100% {
+                transform: scale(0.8);
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+            }
         }
-        
+
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-        
+
         .user-name {
             color: #b87cff;
             font-weight: 500;
         }
-        
+
         .nav-buttons {
             display: flex;
             gap: 10px;
         }
-        
+
         .nav-btn {
             padding: 8px 16px;
             background: rgba(98, 0, 234, 0.2);
@@ -117,11 +135,11 @@
             font-size: 13px;
             transition: all 0.3s;
         }
-        
-        .nav-btn:hover {
-            background: rgba(98, 0, 234, 0.3);
-        }
-        
+
+            .nav-btn:hover {
+                background: rgba(98, 0, 234, 0.3);
+            }
+
         .logout-btn {
             padding: 8px 16px;
             background: rgba(220, 53, 69, 0.2);
@@ -132,11 +150,11 @@
             font-size: 13px;
             transition: all 0.3s;
         }
-        
-        .logout-btn:hover {
-            background: rgba(220, 53, 69, 0.3);
-        }
-        
+
+            .logout-btn:hover {
+                background: rgba(220, 53, 69, 0.3);
+            }
+
         .tabs {
             display: flex;
             gap: 10px;
@@ -146,7 +164,7 @@
             padding: 4px;
             flex-wrap: wrap;
         }
-        
+
         .tab {
             padding: 12px 20px;
             cursor: pointer;
@@ -158,31 +176,38 @@
             border-radius: 10px;
             transition: all 0.3s;
         }
-        
-        .tab:hover {
-            color: #c084fc;
-        }
-        
-        .tab.active {
-            background: linear-gradient(135deg, #dc3545, #c82333);
-            color: white;
-            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
-        }
-        
+
+            .tab:hover {
+                color: #c084fc;
+            }
+
+            .tab.active {
+                background: linear-gradient(135deg, #dc3545, #c82333);
+                color: white;
+                box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+            }
+
         .tab-content {
             display: none;
             animation: fadeIn 0.3s ease;
         }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
+
+            .tab-content.active {
+                display: block;
+            }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(10px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
-        
+
         .add-btn {
             padding: 12px 24px;
             background: linear-gradient(135deg, #dc3545, #c82333);
@@ -195,12 +220,12 @@
             margin-bottom: 20px;
             transition: all 0.3s;
         }
-        
-        .add-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
-        }
-        
+
+            .add-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+            }
+
         .exportToCSVBt {
             background: linear-gradient(135deg, #6200ea, #8b3dff);
             color: white;
@@ -215,25 +240,25 @@
             margin-right: 10px;
             transition: all 0.3s;
         }
-        
-        .exportToCSVBt:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(98, 0, 234, 0.4);
-        }
-        
+
+            .exportToCSVBt:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(98, 0, 234, 0.4);
+            }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        
+
         th, td {
             padding: 14px 12px;
             text-align: left;
             border-bottom: 1px solid rgba(98, 0, 234, 0.2);
             color: #ddd;
         }
-        
+
         th {
             background: rgba(98, 0, 234, 0.15);
             color: #c084fc;
@@ -242,21 +267,50 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        
+
         .status {
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 500;
         }
-        
-        .status.admin { background: rgba(220, 53, 69, 0.2); color: #dc3545; border: 1px solid rgba(220, 53, 69, 0.3); }
-        .status.manager { background: rgba(40, 167, 69, 0.2); color: #28a745; border: 1px solid rgba(40, 167, 69, 0.3); }
-        .status.employee { background: rgba(23, 162, 184, 0.2); color: #17a2b8; border: 1px solid rgba(23, 162, 184, 0.3); }
-        .status.pending { background: rgba(255, 193, 7, 0.2); color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.3); }
-        .status.approved { background: rgba(40, 167, 69, 0.2); color: #28a745; border: 1px solid rgba(40, 167, 69, 0.3); }
-        .status.rejected { background: rgba(220, 53, 69, 0.2); color: #dc3545; border: 1px solid rgba(220, 53, 69, 0.3); }
-        
+
+            .status.admin {
+                background: rgba(220, 53, 69, 0.2);
+                color: #dc3545;
+                border: 1px solid rgba(220, 53, 69, 0.3);
+            }
+
+            .status.manager {
+                background: rgba(40, 167, 69, 0.2);
+                color: #28a745;
+                border: 1px solid rgba(40, 167, 69, 0.3);
+            }
+
+            .status.employee {
+                background: rgba(23, 162, 184, 0.2);
+                color: #17a2b8;
+                border: 1px solid rgba(23, 162, 184, 0.3);
+            }
+
+            .status.pending {
+                background: rgba(255, 193, 7, 0.2);
+                color: #ffc107;
+                border: 1px solid rgba(255, 193, 7, 0.3);
+            }
+
+            .status.approved {
+                background: rgba(40, 167, 69, 0.2);
+                color: #28a745;
+                border: 1px solid rgba(40, 167, 69, 0.3);
+            }
+
+            .status.rejected {
+                background: rgba(220, 53, 69, 0.2);
+                color: #dc3545;
+                border: 1px solid rgba(220, 53, 69, 0.3);
+            }
+
         .action-btn {
             padding: 5px 12px;
             margin: 0 3px;
@@ -266,38 +320,38 @@
             font-size: 12px;
             transition: all 0.3s;
         }
-        
+
         .edit-btn {
             background: rgba(255, 193, 7, 0.2);
             color: #ffc107;
             border: 1px solid rgba(255, 193, 7, 0.3);
         }
-        
+
         .delete-btn {
             background: rgba(220, 53, 69, 0.2);
             color: #dc3545;
             border: 1px solid rgba(220, 53, 69, 0.3);
         }
-        
+
         .approve-btn {
             background: rgba(40, 167, 69, 0.2);
             color: #28a745;
             border: 1px solid rgba(40, 167, 69, 0.3);
         }
-        
+
         .reject-btn {
             background: rgba(220, 53, 69, 0.2);
             color: #dc3545;
             border: 1px solid rgba(220, 53, 69, 0.3);
         }
-        
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
-        
+
         .stat-card {
             background: rgba(20, 20, 30, 0.5);
             padding: 25px;
@@ -305,20 +359,20 @@
             text-align: center;
             border: 1px solid rgba(98, 0, 234, 0.2);
         }
-        
-        .stat-card h3 {
-            color: #aaa;
-            font-size: 14px;
-            font-weight: 400;
-            margin-bottom: 10px;
-        }
-        
+
+            .stat-card h3 {
+                color: #aaa;
+                font-size: 14px;
+                font-weight: 400;
+                margin-bottom: 10px;
+            }
+
         .stat-number {
             font-size: 36px;
             font-weight: 700;
             color: #dc3545;
         }
-        
+
         .pending-count {
             background: #dc3545;
             color: white;
@@ -327,7 +381,7 @@
             margin-left: 8px;
             font-size: 12px;
         }
-        
+
         .modal {
             display: none;
             position: fixed;
@@ -341,7 +395,7 @@
             align-items: center;
             z-index: 1000;
         }
-        
+
         .modal-content {
             background: rgba(10, 10, 15, 0.98);
             padding: 30px;
@@ -349,41 +403,41 @@
             width: 450px;
             border: 1px solid rgba(98, 0, 234, 0.3);
         }
-        
-        .modal-content h2 {
-            color: #fff;
-            margin-bottom: 25px;
-            font-size: 22px;
-        }
-        
+
+            .modal-content h2 {
+                color: #fff;
+                margin-bottom: 25px;
+                font-size: 22px;
+            }
+
         .form-group {
             margin-bottom: 18px;
         }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #aaa;
-            font-size: 13px;
-            text-transform: uppercase;
-        }
-        
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px 16px;
-            background: rgba(20, 20, 30, 0.8);
-            border: 1px solid rgba(98, 0, 234, 0.3);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 14px;
-        }
-        
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                color: #aaa;
+                font-size: 13px;
+                text-transform: uppercase;
+            }
+
+            .form-group input, .form-group select {
+                width: 100%;
+                padding: 12px 16px;
+                background: rgba(20, 20, 30, 0.8);
+                border: 1px solid rgba(98, 0, 234, 0.3);
+                border-radius: 10px;
+                color: #fff;
+                font-size: 14px;
+            }
+
         .modal-buttons {
             display: flex;
             gap: 10px;
             margin-top: 25px;
         }
-        
+
         .save-btn {
             flex: 1;
             padding: 12px;
@@ -394,7 +448,7 @@
             cursor: pointer;
             font-weight: 600;
         }
-        
+
         .cancel-btn {
             flex: 1;
             padding: 12px;
@@ -404,17 +458,26 @@
             border-radius: 10px;
             cursor: pointer;
         }
-        
+
         h2 {
             color: #fff;
             font-size: 20px;
             font-weight: 500;
             margin-bottom: 20px;
         }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #1a1a2a; }
-        ::-webkit-scrollbar-thumb { background: #6200ea; border-radius: 3px; }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a2a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #6200ea;
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
@@ -432,7 +495,6 @@
                 </div>
             </div>
         </div>
-        
         <div class="tabs">
             <button class="tab active" onclick="switchTab('pending')">
                 🆕 Заявки <span id="pendingCount" class="pending-count">0</span>
@@ -440,6 +502,8 @@
             <button class="tab" onclick="switchTab('users')">👥 Пользователи</button>
             <button class="tab" onclick="switchTab('shifts')">📋 Все смены</button>
             <button class="tab" onclick="switchTab('stats')">📊 Статистика</button>
+            <button class="tab" onclick="switchTab('organizations')">🏢 Организации</button>
+            <button class="tab" onclick="switchTab('database')">🗄️ База данных</button>
             <button class="tab" onclick="switchTab('export')">📁 Экспорт</button>
         </div>
         
@@ -447,7 +511,7 @@
         <div id="pendingTab" class="tab-content active">
             <h2>🆕 Заявки на регистрацию</h2>
             <p style="color: #888; margin-bottom: 20px;">Новые пользователи ожидают подтверждения</p>
-            
+
             <table id="pendingUsersTable">
                 <thead>
                     <tr>
@@ -462,14 +526,33 @@
                 <tbody></tbody>
             </table>
         </div>
-        
+        <!-- Вкладка: Настройки Google -->
+        <div id="settingsTab" class="tab-content">
+            <h2>🔧 Настройки Google Sheets</h2>
+            <div style="margin-top: 30px; max-width: 500px;">
+                <div class="form-group">
+                    <label>ID Google Таблицы</label>
+                    <input type="text" id="spreadsheetId" placeholder="Из URL таблицы">
+                    <small style="color: #666;">Например: 1ABC123...</small>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="autoSync"> Автоматическая синхронизация при добавлении смен
+                    </label>
+                </div>
+                <button class="exportToCSVBt" onclick="saveGoogleSettings()">💾 Сохранить настройки</button>
+                <button class="exportToCSVBt" onclick="syncToGoogleSheets()" style="margin-left: 10px;">🔄 Синхронизировать сейчас</button>
+            </div>
+        </div>
         <!-- Пользователи -->
         <div id="usersTab" class="tab-content">
             <button class="add-btn" onclick="openUserModal()">➕ Добавить пользователя</button>
-            
+
+            <!-- В таблицу пользователей добавьте колонку с чекбоксами -->
             <table id="usersTable">
                 <thead>
                     <tr>
+                        <th><input type="checkbox" onchange="toggleAllUsers(this.checked)"></th>
                         <th>ID</th>
                         <th>ФИО</th>
                         <th>Логин</th>
@@ -480,12 +563,19 @@
                 </thead>
                 <tbody></tbody>
             </table>
+
+            <!-- Панель массовых действий -->
+            <div id="bulkActions" style="display: none; margin-top: 20px; padding: 15px; background: rgba(98, 0, 234, 0.1); border-radius: 10px;">
+                <span>Выбрано: <span id="selectedCount">0</span> сотрудников</span>
+                <button class="exportToCSVBt" onclick="bulkMoveEmployees()" style="margin-left: 20px;">📦 Переместить выбранных</button>
+                <button class="cancel-btn" onclick="selectedUsers.clear(); updateBulkActionsVisibility(); loadUsers();">Отмена</button>
+            </div>
         </div>
-        
+
         <!-- Все смены -->
         <div id="shiftsTab" class="tab-content">
             <button class="exportToCSVBt" onclick="exportToCSV()">📊 Экспорт в CSV</button>
-            
+
             <table id="adminShiftsTable">
                 <thead>
                     <tr>
@@ -500,13 +590,13 @@
                 <tbody></tbody>
             </table>
         </div>
-        
+
         <!-- Статистика -->
         <div id="statsTab" class="tab-content">
             <div class="stats-grid" id="adminStatsContent"></div>
             <div id="departmentStats" style="margin-top: 30px;"></div>
         </div>
-        
+
         <!-- Экспорт -->
         <div id="exportTab" class="tab-content">
             <h2>Экспорт данных системы</h2>
@@ -516,7 +606,9 @@
             </div>
         </div>
     </div>
-    
+    <button class="exportToCSVBt" onclick="syncToGoogleSheets()">
+        🔄 Синхронизировать с Google Таблицами
+    </button>
     <!-- Модальное окно -->
     <div id="userModal" class="modal">
         <div class="modal-content">
@@ -558,149 +650,176 @@
 
     <script>
         let currentUser = JSON.parse(localStorage.getItem('user'));
-        
+
         if (!currentUser || currentUser.role !== 'admin') {
             window.location.href = '/login.html';
         }
-        
+
         document.getElementById('userName').textContent = `${currentUser.full_name} (Администратор)`;
-        
+        async function syncToGoogleSheets() {
+            try {
+                const response = await fetch('/api/google/sync', { method: 'POST' });
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(`✅ ${result.message}\n\n📊 Открыть таблицу?`);
+                    if (confirm('Открыть Google Таблицу?')) {
+                        window.open(result.sheet_url, '_blank');
+                    }
+                } else {
+                    alert('❌ Ошибка: ' + result.error);
+                }
+            } catch (error) {
+                alert('❌ Ошибка синхронизации');
+            }
+        }
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
+
             event.target.classList.add('active');
             document.getElementById(tabName + 'Tab').classList.add('active');
-            
+
             if (tabName === 'pending') loadPendingUsers();
             else if (tabName === 'users') loadUsers();
             else if (tabName === 'shifts') loadAllShifts();
             else if (tabName === 'stats') loadStats();
         }
-        
+
         async function loadPendingUsers() {
             try {
                 const response = await fetch('/api/users/pending');
                 const users = await response.json();
-                
+
                 const tbody = document.querySelector('#pendingUsersTable tbody');
                 tbody.innerHTML = '';
-                
+
                 document.getElementById('pendingCount').textContent = users.length;
-                
+
                 if (users.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #888;">✅ Нет заявок на регистрацию</td></tr>';
                     return;
                 }
-                
+
                 users.forEach(user => {
                     const row = tbody.insertRow();
                     const created = user.created_at ? new Date(user.created_at).toLocaleString('ru-RU') : '-';
-                    
+
                     row.innerHTML = `
-                        <td>${created}</td>
-                        <td>${user.full_name}</td>
-                        <td>${user.username}</td>
-                        <td><span class="status ${user.role}">${getRoleText(user.role)}</span></td>
-                        <td>${user.department || '-'}</td>
-                        <td>
-                            <button class="action-btn approve-btn" onclick="approveUser(${user.id})">✓ Подтвердить</button>
-                            <button class="action-btn reject-btn" onclick="rejectUser(${user.id})">✗ Отклонить</button>
-                        </td>
-                    `;
+                                <td>${created}</td>
+                                <td>${user.full_name}</td>
+                                <td>${user.username}</td>
+                                <td><span class="status ${user.role}">${getRoleText(user.role)}</span></td>
+                                <td>${user.department || '-'}</td>
+                                <td>
+                                    <button class="action-btn approve-btn" onclick="approveUser(${user.id})">✓ Подтвердить</button>
+                                    <button class="action-btn reject-btn" onclick="rejectUser(${user.id})">✗ Отклонить</button>
+                                </td>
+                            `;
                 });
             } catch (error) {
                 console.error('Ошибка:', error);
             }
         }
-        
+
         async function loadUsers() {
             try {
                 const response = await fetch('/api/users');
                 const users = await response.json();
-                
+
                 const tbody = document.querySelector('#usersTable tbody');
                 tbody.innerHTML = '';
-                
+
                 users.forEach(user => {
                     const row = tbody.insertRow();
                     row.innerHTML = `
-                        <td>${user.id}</td>
-                        <td>${user.full_name}</td>
-                        <td>${user.username}</td>
-                        <td><span class="status ${user.role}">${getRoleText(user.role)}</span></td>
-                        <td>${user.department || '-'}</td>
-                        <td>
-                            <button class="action-btn edit-btn" onclick="editUser(${user.id})">✏️</button>
-                            ${user.role !== 'admin' || user.id !== currentUser.user_id ? 
-                                `<button class="action-btn delete-btn" onclick="deleteUser(${user.id})">🗑️</button>` : ''}
-                        </td>
-                    `;
+                <td><input type="checkbox" onchange="toggleUserSelection(${user.id}, this.checked)"></td>
+                <td>${user.id}</td>
+                <td>${user.full_name}</td>
+                <td>${user.username}</td>
+                <td><span class="status ${user.role}">${getRoleText(user.role)}</span></td>
+                <td>${user.department_name || '—'}</td>
+                <td>
+                    <button class="action-btn edit-btn" onclick="editUser(${user.id})">✏️</button>
+                    <button class="action-btn" onclick="showMoveEmployeeModal(${user.id})" style="background: #17a2b8; color: white;">📦</button>
+                    <button class="action-btn" onclick="showUserHistory(${user.id})" style="background: #6c757d; color: white;">📋</button>
+                    ${user.role !== 'admin' || user.id !== currentUser.user_id ?
+                            `<button class="action-btn delete-btn" onclick="deleteUser(${user.id})">🗑️</button>` : ''}
+                </td>
+            `;
                 });
             } catch (error) {
                 console.error('Ошибка:', error);
             }
         }
-        
+
+        function toggleAllUsers(checked) {
+            document.querySelectorAll('#usersTable tbody input[type="checkbox"]').forEach(cb => {
+                cb.checked = checked;
+                const userId = parseInt(cb.closest('tr').querySelector('td:nth-child(2)').textContent);
+                toggleUserSelection(userId, checked);
+            });
+        }
+
         async function loadAllShifts() {
             try {
                 const response = await fetch('/api/shifts');
                 const shifts = await response.json();
-                
+
                 const tbody = document.querySelector('#adminShiftsTable tbody');
                 tbody.innerHTML = '';
-                
+
                 shifts.sort((a, b) => b.date.localeCompare(a.date)).forEach(shift => {
                     const row = tbody.insertRow();
                     row.innerHTML = `
-                        <td>${shift.full_name}</td>
-                        <td>${shift.department || '-'}</td>
-                        <td>${shift.date}</td>
-                        <td>${shift.start_time} ${shift.end_time ? '- ' + shift.end_time : ''}</td>
-                        <td><span class="status ${shift.status}">${getStatusText(shift.status)}</span></td>
-                        <td>
-                            ${shift.status === 'pending' ? `
-                                <button class="action-btn approve-btn" onclick="updateStatus(${shift.id}, 'approved')">✓</button>
-                                <button class="action-btn reject-btn" onclick="updateStatus(${shift.id}, 'rejected')">✗</button>
-                            ` : '-'}
-                            <button class="action-btn delete-btn" onclick="deleteShift(${shift.id})">🗑️</button>
-                        </td>
-                    `;
+                                <td>${shift.full_name}</td>
+                                <td>${shift.department || '-'}</td>
+                                <td>${shift.date}</td>
+                                <td>${shift.start_time} ${shift.end_time ? '- ' + shift.end_time : ''}</td>
+                                <td><span class="status ${shift.status}">${getStatusText(shift.status)}</span></td>
+                                <td>
+                                    ${shift.status === 'pending' ? `
+                                        <button class="action-btn approve-btn" onclick="updateStatus(${shift.id}, 'approved')">✓</button>
+                                        <button class="action-btn reject-btn" onclick="updateStatus(${shift.id}, 'rejected')">✗</button>
+                                    ` : '-'}
+                                    <button class="action-btn delete-btn" onclick="deleteShift(${shift.id})">🗑️</button>
+                                </td>
+                            `;
                 });
             } catch (error) {
                 console.error('Ошибка:', error);
             }
         }
-        
+
         async function loadStats() {
             try {
                 const response = await fetch('/api/stats');
                 const stats = await response.json();
-                
+
                 const content = document.getElementById('adminStatsContent');
                 content.innerHTML = `
-                    <div class="stat-card">
-                        <h3>Всего пользователей</h3>
-                        <div class="stat-number">${stats.total_employees + 2}</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Сотрудников</h3>
-                        <div class="stat-number">${stats.total_employees}</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Всего смен</h3>
-                        <div class="stat-number">${stats.total_shifts}</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>На подтверждении</h3>
-                        <div class="stat-number" style="color: #ffc107;">${stats.pending_shifts}</div>
-                    </div>
-                `;
+                            <div class="stat-card">
+                                <h3>Всего пользователей</h3>
+                                <div class="stat-number">${stats.total_employees + 2}</div>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Сотрудников</h3>
+                                <div class="stat-number">${stats.total_employees}</div>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Всего смен</h3>
+                                <div class="stat-number">${stats.total_shifts}</div>
+                            </div>
+                            <div class="stat-card">
+                                <h3>На подтверждении</h3>
+                                <div class="stat-number" style="color: #ffc107;">${stats.pending_shifts}</div>
+                            </div>
+                        `;
             } catch (error) {
                 console.error('Ошибка:', error);
             }
         }
-        
+
         async function approveUser(userId) {
             try {
                 await fetch(`/api/users/${userId}/approve`, { method: 'PUT' });
@@ -711,7 +830,7 @@
                 alert('❌ Ошибка');
             }
         }
-        
+
         async function rejectUser(userId) {
             if (confirm('Отклонить заявку?')) {
                 try {
@@ -723,20 +842,20 @@
                 }
             }
         }
-        
+
         async function updateStatus(shiftId, status) {
             try {
                 await fetch(`/api/shifts/${shiftId}/status`, {
                     method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({status})
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
                 });
                 loadAllShifts();
             } catch (error) {
                 alert('❌ Ошибка');
             }
         }
-        
+
         async function deleteShift(shiftId) {
             if (confirm('Удалить смену?')) {
                 try {
@@ -747,31 +866,209 @@
                 }
             }
         }
-        
+
         function getRoleText(role) {
             const roles = { 'admin': 'Админ', 'manager': 'Руководитель', 'employee': 'Сотрудник' };
             return roles[role] || role;
         }
-        
+
         function getStatusText(status) {
             const statuses = { 'pending': 'Ожидает', 'approved': 'Подтверждено', 'rejected': 'Отклонено' };
             return statuses[status] || status;
         }
-        
+
         function exportToCSV() {
             window.open('/api/export/csv', '_blank');
         }
-        
+        // Модальное окно для перемещения сотрудника
+        function showMoveEmployeeModal(userId, currentDeptId) {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+
+            modal.innerHTML = `
+        <div class="modal-content">
+            <h2>📦 Переместить сотрудника</h2>
+            <div class="form-group">
+                <label>Выберите организацию</label>
+                <select id="moveOrgSelect" onchange="loadDepartmentsForMove()">
+                    <option value="">Загрузка...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Выберите отдел</label>
+                <select id="moveDeptSelect">
+                    <option value="">Сначала выберите организацию</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="this.closest('.modal').remove()">Отмена</button>
+                <button class="save-btn" onclick="moveEmployee(${userId})">Переместить</button>
+            </div>
+        </div>
+    `;
+            
+            document.body.appendChild(modal);
+            loadOrganizationsForMove();
+        }
+
+        async function loadOrganizationsForMove() {
+            try {
+                const response = await fetch('/api/organizations');
+                const orgs = await response.json();
+
+                const select = document.getElementById('moveOrgSelect');
+                select.innerHTML = '<option value="">Выберите организацию</option>';
+
+                orgs.forEach(org => {
+                    select.innerHTML += `<option value="${org.id}">${org.name}</option>`;
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки организаций:', error);
+            }
+        }
+
+        async function loadDepartmentsForMove() {
+            const orgId = document.getElementById('moveOrgSelect').value;
+            if (!orgId) return;
+
+            try {
+                const response = await fetch(`/api/departments/tree?organization_id=${orgId}`);
+                const tree = await response.json();
+
+                const select = document.getElementById('moveDeptSelect');
+                select.innerHTML = '<option value="">Выберите отдел</option>';
+
+                function addOptions(nodes, level = 0) {
+                    nodes.forEach(node => {
+                        const indent = '— '.repeat(level);
+                        select.innerHTML += `<option value="${node.id}">${indent}${node.name}</option>`;
+                        if (node.children) {
+                            addOptions(node.children, level + 1);
+                        }
+                    });
+                }
+
+                addOptions(tree);
+            } catch (error) {
+                console.error('Ошибка загрузки отделов:', error);
+            }
+        }
+
+        async function moveEmployee(userId) {
+            const deptId = document.getElementById('moveDeptSelect').value;
+            const orgId = document.getElementById('moveOrgSelect').value;
+
+            if (!deptId) {
+                alert('❌ Выберите отдел');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/users/${userId}/move`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        department_id: parseInt(deptId),
+                        organization_id: parseInt(orgId)
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    document.querySelector('.modal').remove();
+                    loadUsers(); // Обновляем список пользователей
+                } else {
+                    alert('❌ ' + result.error);
+                }
+            } catch (error) {
+                alert('❌ Ошибка перемещения');
+            }
+        }
+
+        // Массовое перемещение
+        let selectedUsers = new Set();
+
+        function toggleUserSelection(userId, checked) {
+            if (checked) {
+                selectedUsers.add(userId);
+            } else {
+                selectedUsers.delete(userId);
+            }
+            updateBulkActionsVisibility();
+        }
+
+        function updateBulkActionsVisibility() {
+            const bulkDiv = document.getElementById('bulkActions');
+            bulkDiv.style.display = selectedUsers.size > 0 ? 'block' : 'none';
+            document.getElementById('selectedCount').textContent = selectedUsers.size;
+        }
+
+        async function bulkMoveEmployees() {
+            const deptId = prompt('Введите ID отдела для перемещения:');
+            if (!deptId) return;
+
+            try {
+                const response = await fetch('/api/departments/transfer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_ids: Array.from(selectedUsers),
+                        department_id: parseInt(deptId)
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    selectedUsers.clear();
+                    loadUsers();
+                } else {
+                    alert('❌ ' + result.error);
+                }
+            } catch (error) {
+                alert('❌ Ошибка перемещения');
+            }
+        }
+
+        // Просмотр истории перемещений
+        async function showUserHistory(userId) {
+            try {
+                const response = await fetch(`/api/users/${userId}/history`);
+                const history = await response.json();
+
+                let message = `📋 История перемещений:\n\n`;
+
+                history.forEach(h => {
+                    const date = new Date(h.changed_at).toLocaleString('ru-RU');
+                    message += `📅 ${date}\n`;
+                    message += `   Из: ${h.old_dept_name || '—'}\n`;
+                    message += `   В: ${h.new_dept_name || '—'}\n`;
+                    message += `   Кто: ${h.changed_by_name || 'Система'}\n\n`;
+                });
+
+                if (history.length === 0) {
+                    message += 'Нет истории перемещений';
+                }
+
+                alert(message);
+            } catch (error) {
+                alert('❌ Ошибка загрузки истории');
+            }
+        }
         async function exportUsersToCSV() {
             try {
                 const response = await fetch('/api/users');
                 const users = await response.json();
-                
+
                 let csv = "ID,ФИО,Логин,Роль,Отдел\n";
                 users.forEach(u => {
                     csv += `${u.id},"${u.full_name}","${u.username}","${u.role}","${u.department || ''}"\n`;
                 });
-                
+
                 const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
@@ -781,12 +1078,12 @@
                 alert('❌ Ошибка экспорта');
             }
         }
-        
+
         function logout() {
             localStorage.removeItem('user');
             window.location.href = '/login.html';
         }
-        
+
         // Начальная загрузка
         loadPendingUsers();
     </script>
